@@ -7,14 +7,47 @@
   <build>
     <sourceDirectory>src</sourceDirectory>
     <plugins>
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.3</version>
-        <configuration>
-          <source/>
-          <target/>
-        </configuration>
-      </plugin>
+   <plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-compiler-plugin</artifactId>
+    <configuration>
+     <source>1.8</source>
+     <target>1.8</target>
+               <excludes>
+            <exclude>test/</exclude>
+          </excludes>
+    </configuration>
+   </plugin>
+
+	<plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-shade-plugin</artifactId>
+		<version>2.4.3</version>
+		<configuration>
+			<outputDirectory>target</outputDirectory>
+			<shadedArtifactAttached>true</shadedArtifactAttached>
+			<promoteTransitiveDependencies>false</promoteTransitiveDependencies>
+			<minimizeJar>true</minimizeJar>
+			<filters>
+				<filter>
+					<artifact>*:*</artifact>
+					<excludes>
+						<exclude>META-INF/*.SF</exclude>
+						<exclude>META-INF/*.DSA</exclude>
+						<exclude>META-INF/*.RSA</exclude>
+					</excludes>
+				</filter>
+			</filters>
+		</configuration>
+		<executions>
+			<execution>
+				<phase>package</phase>
+				<goals>
+					<goal>shade</goal>
+				</goals>
+			</execution>
+		</executions>
+	</plugin>
     </plugins>
   </build>
   <dependencies>
