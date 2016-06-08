@@ -1,5 +1,5 @@
 #JKik
-a java kik api
+Open source simple java kik api
 
 # Auth key
 To get an auth key visit https://dev.kik.com/#/home
