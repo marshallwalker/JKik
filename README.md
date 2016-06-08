@@ -6,15 +6,23 @@ To get an auth key visit https://dev.kik.com/#/home
 
 #Creating an instance of the api
 
+```java
+
 KikAPI api = new KikAPI("username", "auth-token");
 api.startWebhook("http://address", "/webhook", port);
 
+```
+
 # Registering a listener
+
+```java
 
 api.getEventBus().register(ChatMessageEvent.class, event ->
 {
 	event.getChat().sendMessage("Hello " + event.getChat().getSender());
 });
+
+```
 
 # Creating a command
 
