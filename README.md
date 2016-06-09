@@ -7,8 +7,8 @@ To get an auth key visit https://dev.kik.com/#/home
 
 # List of Events
 
-ChatEvent
-CommandEvent
+- ChatEvent
+- CommandEvent
 
 #Creating an instance of the api
 

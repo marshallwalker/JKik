@@ -51,7 +51,7 @@ public class Webhook
 					api.getEventBus().post(new ChatEvent(new Chat(api, chatId, sender), message, timestamp));
 				}
 			}
-			return "";
+			return "200";
 		});
 
 		return this;
