@@ -1,5 +1,5 @@
 #JKik
-Open source simple java kik api
+JKik is a simple Java kik api for creating bots.
 
 # Auth key
 To get an auth key visit https://dev.kik.com/#/home
@@ -8,16 +8,21 @@ To get an auth key visit https://dev.kik.com/#/home
 
 ```java
 
-KikAPI api = new KikAPI("username", "auth-token");
-api.startWebhook("http://address", "/webhook", port);
+KikAPI api = new KikAPI("username", "auth-key");
+api.start("http://your-address", 8686, "/webhook");
 
 ```
+
+# List of Events
+
+ > ChatEvent
+ > CommandEvent
 
 # Registering a listener
 
 ```java
 
-api.getEventBus().register(ChatMessageEvent.class, event ->
+api.getEventBus().register(ChatEvent.class, event ->
 {
 	event.getChat().sendMessage("Hello " + event.getChat().getSender());
 });
@@ -46,8 +51,8 @@ public class Main
 {
 	public static void main(String[] args) throws Exception
 	{
-		KikAPI api = new KikAPI("username", "auth-token");
-		api.startWebhook("http://address", "/webhook", port);
+		KikAPI api = new KikAPI("username", "auth-key");
+		api.start("http://your-address", 8686, "/webhook");
 		
 		api.getCommandBus().register(new TestCommand());
 	}
