@@ -4,6 +4,12 @@ JKik is a simple Java kik api for creating bots.
 # Auth key
 To get an auth key visit https://dev.kik.com/#/home
 
+
+# List of Events
+
+ChatEvent
+CommandEvent
+
 #Creating an instance of the api
 
 ```java
@@ -12,11 +18,6 @@ KikAPI api = new KikAPI("username", "auth-key");
 api.start("http://your-address", 8686, "/webhook");
 
 ```
-
-# List of Events
-
- > ChatEvent
- > CommandEvent
 
 # Registering a listener
 
