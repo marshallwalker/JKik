@@ -7,10 +7,9 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class ChatMessageEvent extends Event
+public class ChatEvent extends Event
 {
 	private final Chat chat;
 	private final String message;
-	private final String rawMessage;
 	private final long timestamp;
 }
