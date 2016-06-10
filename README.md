@@ -21,6 +21,8 @@ api.start("http://your-address", 8686, "/webhook");
 
 # Registering a listener
 
+This evenbus is thread-safe & reflectionless
+
 ```java
 
 api.getEventBus().register(ChatEvent.class, event ->
@@ -31,6 +33,9 @@ api.getEventBus().register(ChatEvent.class, event ->
 ```
 
 #Creating suggestions
+
+Suggestions will replace the keyboard with buttons,
+then you click these buttons, it will send the defined text.
 
 ```java
 Suggestion suggestions = new Suggestion("How are you?");

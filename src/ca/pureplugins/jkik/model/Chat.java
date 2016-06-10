@@ -9,14 +9,23 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 import ca.pureplugins.jkik.KikAPI;
-import lombok.Data;
+import lombok.Getter;
 
-@Data
 public class Chat
 {
+	@Getter
 	private final KikAPI api;
+	
+	@Getter
 	private final String chatId;
 	private final String sender;
+	
+	public Chat(KikAPI api, String chatId, String username)
+	{
+		this.api = api;
+		this.chatId = chatId;
+		this.sender = username;
+	}
 
 	public void sendSuggestion(Suggestion suggestion)
 	{
@@ -58,5 +67,10 @@ public class Chat
 		{
 			api.getLogger().log(Level.SEVERE, "Unable to send chat message", e);
 		}
+	}
+	
+	public User getUser()
+	{
+		return new User(api, sender);
 	}
 }

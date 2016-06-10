@@ -26,26 +26,20 @@ public class Suggestion
 	{
 		JSONObject builder = new JSONObject();
 		JSONArray messages = new JSONArray();
-
 		JSONObject body = new JSONObject();
 		body.put("chatId", chat.getChatId());
 		body.put("type", "text");
-		body.put("to", chat.getSender());
+		body.put("to", chat.getUser().getUsername());
 		body.put("body", message);
-
 		JSONArray keyboards = new JSONArray();
-
 		JSONObject keyboard = new JSONObject();
-		keyboard.put("to", chat.getSender());
+		keyboard.put("to", chat.getUser().getUsername());
 		keyboard.put("type", "suggested");
 		keyboard.put("responses", buttons);
 		keyboards.put(keyboard);
-
 		body.put("keyboards", keyboards);
-
 		messages.put(body);
 		builder.put("messages", messages);
-
 		return builder;
 	}
 }
