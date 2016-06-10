@@ -30,6 +30,18 @@ api.getEventBus().register(ChatEvent.class, event ->
 
 ```
 
+#Creating suggestions
+
+```java
+Suggestion suggestions = new Suggestion("How are you?");
+
+suggestions.addButton("Good :)");
+suggestions.addButton("Not so good :(");
+
+getChat().sendSuggestion(suggestions);
+
+```
+
 # Creating a command
 
 ```java

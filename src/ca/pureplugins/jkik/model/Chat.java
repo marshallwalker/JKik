@@ -18,6 +18,22 @@ public class Chat
 	private final String chatId;
 	private final String sender;
 
+	public void sendSuggestion(Suggestion suggestion)
+	{
+		try
+		{
+			Unirest.post("https://api.kik.com/v1/message")
+			.header("Content-Type", "application/json")
+			.header("Authorization", api.getToken())
+			.body(suggestion.build(this))
+			.asJson();
+		}
+		catch (UnirestException e)
+		{
+			api.getLogger().log(Level.SEVERE, "Unable to send suggestion", e);
+		}
+	}
+
 	public void sendMessage(String message)
 	{
 		JSONObject wrapper = new JSONObject();
@@ -38,7 +54,7 @@ public class Chat
 			.body(wrapper)
 			.asJson();
 		}
-		catch(UnirestException e)
+		catch (UnirestException e)
 		{
 			api.getLogger().log(Level.SEVERE, "Unable to send chat message", e);
 		}
