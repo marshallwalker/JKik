@@ -23,7 +23,7 @@ public class User
 	public User(KikAPI api, String username)
 	{
 		this.api = api;
-		this.username = username; 
+		this.username = username;
 		
 		try
 		{
