@@ -1,6 +1,6 @@
 package ca.pureplugins.jkik.server;
 
-import java.util.logging.Level;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -11,7 +11,8 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import ca.pureplugins.jkik.KikAPI;
 import ca.pureplugins.jkik.event.ChatEvent;
 import ca.pureplugins.jkik.event.CommandEvent;
-import ca.pureplugins.jkik.model.Chat;
+import ca.pureplugins.jkik.exception.UpdateConfigException;
+import ca.pureplugins.jkik.model.ChatImpl;
 import lombok.Data;
 import spark.Spark;
 
@@ -24,36 +25,37 @@ public class Webhook
 	private int port = 8686;
 	private String path = "/webhook";
 
-	public Webhook start()
+	@SuppressWarnings("unchecked")
+	public Webhook start() throws UpdateConfigException
 	{
 		setConfig();
 
 		Spark.port(port);
 		Spark.post(path, (request, response) ->
 		{
-			JSONArray content = new JSONObject(request.body()).getJSONArray("messages");
+			JSONArray messages = new JSONObject(request.body()).getJSONArray("messages");
 
-			for (int i = 0; i < content.length(); i++)
+			for (int i = 0; i < messages.length(); i++)
 			{
-				JSONObject obj = content.getJSONObject(i);
+				JSONObject message = messages.getJSONObject(i);
 
-				String sender = obj.getString("from");
-				String message = obj.getString("body");
-				String chatId = obj.getString("chatId");
-				long timestamp = obj.getLong("timestamp");
+				String sender = message.getString("from");
+				String body = message.getString("body");
+				String chatId = message.getString("chatId");
+				long timestamp = message.getLong("timestamp");
+				List<String> participants = (List<String>) message.get("participants");
 
-				if (message.startsWith(api.getCommandBus().getPrefix()))
+				if (body.startsWith(api.getCommandBus().getPrefix()))
 				{
-					api.getEventBus().post(new CommandEvent(new Chat(api, chatId, sender), message));
+					api.getEventBus().post(new CommandEvent(new ChatImpl(api, chatId, sender, participants), body));
 				}
 				else
 				{
-					api.getEventBus().post(new ChatEvent(new Chat(api, chatId, sender), message, timestamp));
+					api.getEventBus().post(new ChatEvent(new ChatImpl(api, chatId, sender, participants), body, timestamp));
 				}
 			}
 			return "200";
 		});
-
 		return this;
 	}
 
@@ -63,7 +65,7 @@ public class Webhook
 		return this;
 	}
 
-	public Webhook setConfig()
+	public Webhook setConfig() throws UpdateConfigException
 	{
 		JSONObject obj = new JSONObject();
 		obj.put("webhook", address + ":" + port + path);
@@ -84,7 +86,7 @@ public class Webhook
 		}
 		catch (UnirestException e)
 		{
-			api.getLogger().log(Level.SEVERE, "Unable to update config", e);
+			throw new UpdateConfigException();
 		}
 		return this;
 	}

@@ -6,6 +6,7 @@ import org.java_websocket.util.Base64;
 
 import ca.pureplugins.jkik.command.CommandBus;
 import ca.pureplugins.jkik.event.base.EventBus;
+import ca.pureplugins.jkik.exception.UpdateConfigException;
 import ca.pureplugins.jkik.server.Webhook;
 import lombok.Data;
 
@@ -29,7 +30,7 @@ public class KikAPI
 		this.token = "Basic " + Base64.encodeBytes((username + ":" + auth).getBytes());
 	}
 
-	public KikAPI start(String address, int port, String path)
+	public KikAPI start(String address, int port, String path) throws UpdateConfigException
 	{
 		webhook.setAddress(address);
 		webhook.setPort(port);

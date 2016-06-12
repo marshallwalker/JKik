@@ -33,7 +33,14 @@ public class CommandBus
 			if (toExecute == null)
 				return;
 
-			api.getLogger().log(Level.INFO, event.getChat().getUser().getUsername() + " executed the command '" + event.getMessage() + "'");
+			try
+			{
+				api.getLogger().log(Level.INFO, event.getChat().getSender().getUsername() + " executed the command '" + event.getMessage() + "'");
+			}
+			catch (Exception e)
+			{
+				e.printStackTrace();
+			}
 
 			toExecute.setChat(event.getChat());
 			toExecute.setArgs(event.getMessage().split(" "));

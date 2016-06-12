@@ -1,33 +1,47 @@
 package ca.pureplugins.jkik.model;
 
-import java.util.logging.Level;
+import java.util.List;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
 import ca.pureplugins.jkik.KikAPI;
+import ca.pureplugins.jkik.exception.GetUserException;
+import ca.pureplugins.jkik.exception.MessageNotSentException;
+import ca.pureplugins.jkik.exception.SuggestionNotSentException;
+import ca.pureplugins.jkik.interfaces.Chat;
+import ca.pureplugins.jkik.interfaces.Suggestion;
+import ca.pureplugins.jkik.interfaces.User;
 import lombok.Getter;
 
-public class Chat
+public class ChatImpl implements Chat
 {
 	@Getter
 	private final KikAPI api;
-	
-	@Getter
 	private final String chatId;
 	private final String sender;
+	private final List<String> participants;
 	
-	public Chat(KikAPI api, String chatId, String username)
+	public ChatImpl(KikAPI api, String chatId, String username, List<String> participants)
 	{
 		this.api = api;
 		this.chatId = chatId;
 		this.sender = username;
+		this.participants = participants;
+	}
+	
+	@Override
+	public String getId()
+	{
+		return chatId;
 	}
 
-	public void sendSuggestion(Suggestion suggestion)
+	@Override
+	public void sendSuggestion(Suggestion suggestion) throws SuggestionNotSentException, JSONException, GetUserException
 	{
 		try
 		{
@@ -39,11 +53,12 @@ public class Chat
 		}
 		catch (UnirestException e)
 		{
-			api.getLogger().log(Level.SEVERE, "Unable to send suggestion", e);
+			throw new SuggestionNotSentException();
 		}
 	}
 
-	public void sendMessage(String message)
+	@Override
+	public void sendMessage(String message) throws MessageNotSentException
 	{
 		JSONObject wrapper = new JSONObject();
 		JSONArray messages = new JSONArray();
@@ -65,12 +80,19 @@ public class Chat
 		}
 		catch (UnirestException e)
 		{
-			api.getLogger().log(Level.SEVERE, "Unable to send chat message", e);
+			throw new MessageNotSentException();
 		}
 	}
 	
-	public User getUser()
+	@Override
+	public User getSender() throws GetUserException
 	{
-		return new User(api, sender);
+		return new UserImpl(api, sender);
+	}
+
+	@Override
+	public List<String> getParticipants()
+	{
+		return participants;
 	}
 }

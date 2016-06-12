@@ -1,7 +1,7 @@
 package ca.pureplugins.jkik.event;
 
 import ca.pureplugins.jkik.event.base.Event;
-import ca.pureplugins.jkik.model.Chat;
+import ca.pureplugins.jkik.interfaces.Chat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

@@ -3,7 +3,7 @@ package ca.pureplugins.jkik.command;
 import java.util.Arrays;
 import java.util.List;
 
-import ca.pureplugins.jkik.model.Chat;
+import ca.pureplugins.jkik.interfaces.Chat;
 import lombok.Data;
 
 @Data
