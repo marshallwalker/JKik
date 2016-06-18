@@ -1,6 +1,6 @@
 package ca.pureplugins.jkik.interfaces;
 
-public abstract interface User
+public abstract interface IUser
 {
 	String getUsername();
 

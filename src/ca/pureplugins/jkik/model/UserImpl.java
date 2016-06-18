@@ -9,10 +9,10 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 
 import ca.pureplugins.jkik.KikAPI;
 import ca.pureplugins.jkik.exception.GetUserException;
-import ca.pureplugins.jkik.interfaces.User;
+import ca.pureplugins.jkik.interfaces.IUser;
 import lombok.Getter;
 
-public class UserImpl implements User
+public class UserImpl implements IUser
 {
 	@Getter
 	private final KikAPI api;

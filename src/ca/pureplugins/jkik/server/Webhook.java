@@ -1,7 +1,5 @@
 package ca.pureplugins.jkik.server;
 
-import java.util.List;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -12,7 +10,7 @@ import ca.pureplugins.jkik.KikAPI;
 import ca.pureplugins.jkik.event.ChatEvent;
 import ca.pureplugins.jkik.event.CommandEvent;
 import ca.pureplugins.jkik.exception.UpdateConfigException;
-import ca.pureplugins.jkik.model.ChatImpl;
+import ca.pureplugins.jkik.model.Chat;
 import lombok.Data;
 import spark.Spark;
 
@@ -25,7 +23,6 @@ public class Webhook
 	private int port = 8686;
 	private String path = "/webhook";
 
-	@SuppressWarnings("unchecked")
 	public Webhook start() throws UpdateConfigException
 	{
 		setConfig();
@@ -43,15 +40,14 @@ public class Webhook
 				String body = message.getString("body");
 				String chatId = message.getString("chatId");
 				long timestamp = message.getLong("timestamp");
-				List<String> participants = (List<String>) message.get("participants");
 
 				if (body.startsWith(api.getCommandBus().getPrefix()))
 				{
-					api.getEventBus().post(new CommandEvent(new ChatImpl(api, chatId, sender, participants), body));
+					api.getEventBus().post(new CommandEvent(new Chat(api, chatId, sender), body));
 				}
 				else
 				{
-					api.getEventBus().post(new ChatEvent(new ChatImpl(api, chatId, sender, participants), body, timestamp));
+					api.getEventBus().post(new ChatEvent(new Chat(api, chatId, sender), body, timestamp));
 				}
 			}
 			return "200";

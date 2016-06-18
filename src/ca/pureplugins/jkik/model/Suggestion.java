@@ -5,21 +5,21 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import ca.pureplugins.jkik.exception.GetUserException;
-import ca.pureplugins.jkik.interfaces.Chat;
-import ca.pureplugins.jkik.interfaces.Suggestion;
+import ca.pureplugins.jkik.interfaces.IChat;
+import ca.pureplugins.jkik.interfaces.ISuggestion;
 
-public class SuggestionImpl implements Suggestion
+public class Suggestion implements ISuggestion
 {
 	private final JSONArray buttons = new JSONArray();
 	private final String message;
 
-	public SuggestionImpl(String message)
+	public Suggestion(String message)
 	{
 		this.message = message;
 	}
 
 	@Override
-	public SuggestionImpl addButton(String text)
+	public Suggestion addButton(String text)
 	{
 		JSONObject button = new JSONObject();
 		button.put("type", "text");
@@ -29,7 +29,7 @@ public class SuggestionImpl implements Suggestion
 	}
 
 	@Override
-	public JSONObject build(Chat chat) throws JSONException, GetUserException
+	public JSONObject build(IChat chat, int delay) throws JSONException, GetUserException
 	{
 		JSONObject builder = new JSONObject();
 		JSONArray messages = new JSONArray();
@@ -37,6 +37,7 @@ public class SuggestionImpl implements Suggestion
 		body.put("chatId", chat.getId());
 		body.put("type", "text");
 		body.put("to", chat.getSender().getUsername());
+		body.put("delay", delay);
 		body.put("body", message);
 		JSONArray keyboards = new JSONArray();
 		JSONObject keyboard = new JSONObject();

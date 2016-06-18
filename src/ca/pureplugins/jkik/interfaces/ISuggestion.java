@@ -5,9 +5,9 @@ import org.json.JSONObject;
 
 import ca.pureplugins.jkik.exception.GetUserException;
 
-public interface Suggestion
+public interface ISuggestion
 {
-	Suggestion addButton(String text);
+	ISuggestion addButton(String text);
 
-	JSONObject build(Chat chat) throws JSONException, GetUserException;
+	JSONObject build(IChat chat, int delay) throws JSONException, GetUserException;
 }
